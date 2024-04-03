@@ -1,8 +1,8 @@
 'use client'
 import React, { use, useEffect, useState } from 'react'
-import SidebarComponent from '../../component/sidebar/sidebarcomponent';
 import "@/app/globals.css";
-import "@/component/icon/fontAwsome"
+// import "@/component/icon/fontAwsome"
+import SidebarComponent from '../component/sidebar/sidebarcomponent';
 export default function layout({children,}: 
   Readonly<{children: React.ReactNode;
 }>){
