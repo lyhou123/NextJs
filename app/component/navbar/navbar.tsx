@@ -1,6 +1,14 @@
 'use client'
 import { Button, Navbar } from "flowbite-react";
+import { useState } from "react";
+import { menuList } from "./menuList";
+type NavbarProps = {
+  name:string,
+  path:string,
+  active:boolean
+}
 export default function NavbarComponent() {
+  const[menu,setMenu]=useState<NavbarProps[]>(menuList)
   return (
     <Navbar className="cotainer mx-auto">
       <Navbar.Brand href="https://flowbite-react.com">
@@ -8,13 +16,11 @@ export default function NavbarComponent() {
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Cambo Production</span>
       </Navbar.Brand>
       <Navbar.Collapse>
-        <Navbar.Link href="#" active>
-          Home
-        </Navbar.Link>
-        <Navbar.Link href="#">About</Navbar.Link>
-        <Navbar.Link href="#">Services</Navbar.Link>
-        <Navbar.Link href="#">Pricing</Navbar.Link>
-        <Navbar.Link href="#">Contact</Navbar.Link>
+        {menu.map((item,index)=>(
+          <Navbar.Link key={index} href={item.path} active={item.active}>
+            {item.name}
+          </Navbar.Link>
+        ))}
       </Navbar.Collapse>
       <div className="flex md:order-2">
         <Button>Get started</Button>

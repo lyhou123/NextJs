@@ -15,7 +15,7 @@ export default function Home() {
   const BASEURL="https://store.istad.co"
   useEffect(()=>{
     setLoading(true)
-    fetch(`${BASEURL}/api/products`)
+    fetch(`${BASEURL}/api/products/?page=1&page_size=20`)
     .then(res=>res.json())
     .then((data)=>{
       const result=data.results;

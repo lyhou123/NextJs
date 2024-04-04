@@ -4,8 +4,9 @@ export type ProductType={
     price: number;
     desc: string;
     image: string;
-    category: string;
+    category: {name:any};
     seller: string;
+    quantity:number;
 }
 export type ProductRespone={
     name:string,
