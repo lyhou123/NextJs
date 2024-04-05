@@ -24,7 +24,6 @@ export default function DashBoard() {
     { const result=data.results
       setProducts(result)
       const isSellerLyhouPhiv = result.some((pro: { seller: string; }) => pro.seller === 'lyhou phiv');
-      console.log(isSellerLyhouPhiv)
       setButtonDelete(isSellerLyhouPhiv)
     })
     .catch(err=>console.log(err))

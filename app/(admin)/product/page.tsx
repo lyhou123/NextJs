@@ -104,7 +104,9 @@ export default function Product() {
 			},
 			body: JSON.stringify(value),
 		});
-
+        if(!res.ok){
+          {router.push(`/dashboard`)}
+		}
         const data = await res.json()
 
         console.log("product uploade: ", data)

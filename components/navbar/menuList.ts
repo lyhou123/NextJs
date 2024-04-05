@@ -15,13 +15,8 @@ export const menuList = [
       active: false,
     },
     {
-      name: "Login",
-      path: "/",
-      active: false,
-    },
-    {
-      name: "Signup",
-      path: "/",
+      name: "Dashboard",
+      path: "/dashboard",
       active: false,
     },
   ];

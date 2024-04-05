@@ -1,12 +1,21 @@
+'use client'
+import { BASE_URL } from "@/lib/constants";
 import { ProductDetailType, ProductRespone, ProductType, placeHolderImage } from "@/lib/defination";
 import { Card } from "flowbite-react";
-export default function CardDetail(pros:ProductRespone) {
-  const placeHolderImage1=placeHolderImage;
+import { useRouter } from "next/navigation";
+const getData=async()=>{	
+  const data=await fetch(`${BASE_URL}/api/products/?page=1&page_size=4`)
+  const respone=await data.json();
+  return respone.results;
+}
+export default async function CardDetail(pros:ProductRespone) {
+  const router=useRouter();
+  const items=await getData();
   return (
     <main className="container mx-auto mt-3 ">
-      <div className="grid lg:grid-cols-2 mx-auto">
-        <div className="max-w-[620px]">
-          <img src={pros?.image||placeHolderImage} alt="" className="w-[620px]"/>
+      <div className="grid lg:grid-cols-2">
+        <div className="max-w-[500px] mx-auto">
+          <img src={pros?.image||placeHolderImage} alt="" className="max-w-[500px] "/>
         </div>
         <div className="leading-[40px]">
           <p>Home / Men / DNK Blue Shoes</p>
@@ -44,66 +53,25 @@ export default function CardDetail(pros:ProductRespone) {
       </div>
       <p className="mt-4 text-[24px] text-black font-semibold ">Suggestion Products</p>
       <div className="mt-[30px] grid sm:grid-cols-1  md:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-[24px]">
-        <Card
-      className="container mx-auto h-[400px] w-[300px]"
-      renderImage={()=>(<img className='w-[310px] h-[350px] overflow-hidden object-fit' src='https://imgs.search.brave.com/mqYOp3wF3iOGpKVRRdFG2pnewoxINT5a29nygZ1BWCM/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by9p/c29sYXRlZC1vcGVu/ZWQtYmxhY2stdC1z/aGlydF8xMjU1NDAt/MTQ1MS5qcGc_c2l6/ZT02MjYmZXh0PWpw/Zw' alt= "productName"/>
-      )}  
-    >
-      <h5 className="mt-[-40px] text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-      Product Name
-      </h5>
-      <p className="font-normal text-gray-700 dark:text-gray-400 line-clamp-2">
-     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quos molestias, exercitationem aut quibusdam ducimus dolore fugiat possimus dolor quam consequuntur!
-      </p>
-      <p className="text-green-600 font-bold">
-       9999$
-      </p>
-    </Card>
-    <Card
-      className="container mx-auto h-[400px] w-[300px]"
-      renderImage={()=>(<img className='w-[310px] h-[350px] overflow-hidden object-fit' src='https://imgs.search.brave.com/mqYOp3wF3iOGpKVRRdFG2pnewoxINT5a29nygZ1BWCM/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by9p/c29sYXRlZC1vcGVu/ZWQtYmxhY2stdC1z/aGlydF8xMjU1NDAt/MTQ1MS5qcGc_c2l6/ZT02MjYmZXh0PWpw/Zw' alt= "productName"/>
-      )}  
-    >
-      <h5 className="mt-[-40px] text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-      Product Name
-      </h5>
-      <p className="font-normal text-gray-700 dark:text-gray-400 line-clamp-2">
-     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quos molestias, exercitationem aut quibusdam ducimus dolore fugiat possimus dolor quam consequuntur!
-      </p>
-      <p className="text-green-600 font-bold">
-       9999$
-      </p>
-    </Card>
-    <Card
-      className="container mx-auto h-[400px] w-[300px]"
-      renderImage={()=>(<img className='w-[310px] h-[350px] overflow-hidden object-fit' src='https://imgs.search.brave.com/mqYOp3wF3iOGpKVRRdFG2pnewoxINT5a29nygZ1BWCM/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by9p/c29sYXRlZC1vcGVu/ZWQtYmxhY2stdC1z/aGlydF8xMjU1NDAt/MTQ1MS5qcGc_c2l6/ZT02MjYmZXh0PWpw/Zw' alt= "productName"/>
-      )}  
-    >
-      <h5 className="mt-[-40px] text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-      Product Name
-      </h5>
-      <p className="font-normal text-gray-700 dark:text-gray-400 line-clamp-2">
-     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quos molestias, exercitationem aut quibusdam ducimus dolore fugiat possimus dolor quam consequuntur!
-      </p>
-      <p className="text-green-600 font-bold">
-       9999$
-      </p>
-    </Card>
-    <Card
-      className="container mx-auto h-[400px] w-[300px]"
-      renderImage={()=>(<img className='w-[310px] h-[350px] overflow-hidden object-fit' src='https://imgs.search.brave.com/mqYOp3wF3iOGpKVRRdFG2pnewoxINT5a29nygZ1BWCM/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by9p/c29sYXRlZC1vcGVu/ZWQtYmxhY2stdC1z/aGlydF8xMjU1NDAt/MTQ1MS5qcGc_c2l6/ZT02MjYmZXh0PWpw/Zw' alt= "productName"/>
-      )}  
-    >
-      <h5 className="mt-[-40px] text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-      Product Name
-      </h5>
-      <p className="font-normal text-gray-700 dark:text-gray-400 line-clamp-2">
-     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quos molestias, exercitationem aut quibusdam ducimus dolore fugiat possimus dolor quam consequuntur!
-      </p>
-      <p className="text-green-600 font-bold">
-       9999$
-      </p>
-    </Card>
+        {items.map((item:ProductType)=>(
+          <Card
+          key={item.id}
+          onClick={()=>router.push(`/product/${item.id}`)}
+          className="container mx-auto h-[400px] w-[300px] cursor-pointer"
+          renderImage={()=>(<img className='w-[310px] h-[350px] overflow-hidden object-fit' src={item?.image||placeHolderImage} alt= "productName"/>
+          )}  
+        >
+          <h5 className="mt-[-40px] text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+          {item?.name||"Product Name"}
+          </h5>
+          <p className="font-normal text-gray-700 dark:text-gray-400 line-clamp-2">
+          {item?.desc||"Product Description"}
+          </p>
+          <p className="text-green-600 font-bold">
+          {item?.price||"Unknown Price"} $
+          </p>
+        </Card>
+        ))}
       </div>
     </main>
   );

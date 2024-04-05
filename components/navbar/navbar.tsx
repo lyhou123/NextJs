@@ -2,6 +2,7 @@
 import { Button, Navbar } from "flowbite-react";
 import { useState } from "react";
 import { menuList } from "./menuList";
+import { usePathname } from "next/navigation";
 type NavbarProps = {
   name:string,
   path:string,
@@ -9,6 +10,7 @@ type NavbarProps = {
 }
 export default function NavbarComponent() {
   const[menu,setMenu]=useState<NavbarProps[]>(menuList)
+  const pathname=usePathname()
   return (
     <Navbar className="cotainer mx-auto">
       <Navbar.Brand href="https://flowbite-react.com">
@@ -17,7 +19,7 @@ export default function NavbarComponent() {
       </Navbar.Brand>
       <Navbar.Collapse>
         {menu.map((item,index)=>(
-          <Navbar.Link key={index} href={item.path} active={item.active}>
+          <Navbar.Link key={index} href={item.path} active={item.path==pathname}>
             {item.name}
           </Navbar.Link>
         ))}

@@ -70,7 +70,7 @@ const validationSchema = Yup.object().shape({
 		category:{name:category},
 		name: name || "",
 		desc: desc || "",
-		image: image || "",
+		image: image || image,
 		price: price || 0,
 		quantity: quantity || 0,
 	};
@@ -84,7 +84,7 @@ const validationSchema = Yup.object().shape({
 		formData.append("name", name);
 		formData.append("image", file);
 
-		const rest = await fetch(`${BASE_URL}/api/file/${typeFile}/${id}/`, {
+		const rest = await fetch(`${BASE_URL}/api/file/${typeFile}/${initialValues.id}/`, {
 			method: "PUT",
 			headers: {
         'Content-Type': 'application/json',
@@ -107,8 +107,7 @@ const handleSubmitProudct = async (props: ProductType) => {
 		},
 		body: JSON.stringify(props),
 	});
-	const data = await res.json()
-	console.log("product uploade: ", data)
+	if(!res.ok) router.push('/dashboard')
 };
   
 	return (
@@ -116,25 +115,19 @@ const handleSubmitProudct = async (props: ProductType) => {
 			<Formik
 				initialValues={initialValues}
 				validationSchema={validationSchema}
-				// onSubmit={handleSubmitProudct}
 				 onSubmit={async (values:any) => {
-					const fileProduct = values.fileProduct;
-					const productImage = await handleUploadeIcon(
-						fileProduct,
-						values.name,
-						"product"
-					);
+				
 					
 					// create product post
                     const productPost: ProductType = {
-                        id: initialValues.id,
-						seller: initialValues.seller,
+                        id: values.id,
+						seller: values.seller,
 						category: {
 							name: values.categoryName,
 						},
                         name: values.name,
                         desc: values.desc,
-                        image: productImage,
+                        image: values.image,
                         price: values.price,
                         quantity: values.quantity,
                     }

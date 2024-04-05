@@ -7,8 +7,8 @@ export default function CardComponent(props:ProductRespone) {
   return (
     <Card
       onClick={props.onClick}
-      className="container mx-auto h-[400px]"
-      renderImage={()=>(<img className='w-[310px] h-[350px] overflow-hidden object-cover' src={props?.image||placeHolderImage} alt={props.name} />
+      className="container mx-auto h-[400px] w-[300px] cursor-pointer"
+      renderImage={()=>(<img className='w-[310px] h-[400px] overflow-hidden object-fit' src={props?.image||placeHolderImage} alt={props.name} />
       )}  
     >
       <h5 className="mt-[-40px] text-xl font-bold tracking-tight text-gray-900 dark:text-white">

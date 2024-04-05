@@ -1,5 +1,16 @@
+import { Metadata } from 'next'
 import React from 'react'
-
+export const metadata: Metadata = {
+    title: "Privacy Policy",
+    description: "Privacy Policy of Cambo Products",
+    openGraph:{
+      type:"website",
+      url:"https://istad.co",
+      title:"Cambo Products",
+      description:"Privacy Policy of Cambo Products",
+      images:"https://www.istad.co/resources/img/CSTAD_120.png",
+    },
+    }
 export default function page() {
   return (
     <main className='container mx-auto leading-7 '>
