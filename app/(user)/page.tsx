@@ -4,9 +4,9 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import '@/app/globals.css'
-import HerosectionComponent from "../component/hero/herosection";
-import CardComponent from "../component/card/cardComponent";
-import Productsfeature from "../component/productList/productsfeature";
+import HerosectionComponent from "@/components/hero/herosection";
+import CardComponent from "@/components/card/cardComponent";
+import Productsfeature from "@/components/productList/productsfeature";
 export default function Home() {
   const router=useRouter();
   const[products,setProduct]=useState<ProductType[]>([])

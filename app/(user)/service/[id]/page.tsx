@@ -1,5 +1,5 @@
 
-import CardDetail from '@/app/component/card/cardDetail'
+import CardDetail from '@/components/card/cardDetail'
 import { ProductDetailType } from '@/lib/defination'
 import { Metadata, ResolvingMetadata } from 'next'
 import React from 'react'

@@ -84,13 +84,13 @@ const validationSchema = Yup.object().shape({
 		formData.append("name", name);
 		formData.append("image", file);
 
-		const rest = await fetch(`${BASE_URL}/api/file/${typeFile}/`, {
+		const rest = await fetch(`${BASE_URL}/api/file/${typeFile}/${id}/`, {
 			method: "PUT",
 			headers: {
         'Content-Type': 'application/json',
 				Authorization: `Bearer ${ACCESS_TOKEN}`,
 			},
-			body: formData,
+		   body:formData
 		});
 
 		const data = await rest.json();
@@ -116,7 +116,32 @@ const handleSubmitProudct = async (props: ProductType) => {
 			<Formik
 				initialValues={initialValues}
 				validationSchema={validationSchema}
-				onSubmit={handleSubmitProudct} // Add the handleSubmitProudct function as the onSubmit prop
+				// onSubmit={handleSubmitProudct}
+				 onSubmit={async (values:any) => {
+					const fileProduct = values.fileProduct;
+					const productImage = await handleUploadeIcon(
+						fileProduct,
+						values.name,
+						"product"
+					);
+					
+					// create product post
+                    const productPost: ProductType = {
+                        id: initialValues.id,
+						seller: initialValues.seller,
+						category: {
+							name: values.categoryName,
+						},
+                        name: values.name,
+                        desc: values.desc,
+                        image: productImage,
+                        price: values.price,
+                        quantity: values.quantity,
+                    }
+
+                    // post product
+                    handleSubmitProudct(productPost)
+				}}
 			>
 				{({ setFieldValue }) => (
 					<Form className="bg-gray-100 p-4 rounded-lg w-full flex justify-evenly">
@@ -286,6 +311,7 @@ const CustomInput = ({ field, form, setFieldValue }: any) => {
 
 		setFieldValue(field.name, file);
 	};
+	console.log(imagePreview)
 	return (
 		<div>
 			<input onChange={(e) => handleUploadeFile(e)} type="file" />

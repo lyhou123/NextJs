@@ -1,6 +1,6 @@
 import React from 'react'
 import { BASE_URL } from '@/lib/constants'
-import { EditProduct } from '@/app/component/form/editform'
+import { EditProduct } from '@/components/form/editform'
 
 type Props = {
 	params:{

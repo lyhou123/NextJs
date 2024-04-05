@@ -2,8 +2,8 @@
 import React, { use, useEffect, useState } from 'react'
 import "@/app/globals.css";
 // import "@/component/icon/fontAwsome"
-import SidebarComponent from '../component/sidebar/sidebarcomponent';
-import SearchButton from '../component/search/searchButton';
+import SidebarComponent from '@/components/sidebar/sidebarcomponent';
+import SearchButton from '@/components/search/searchButton';
 export default function layout({children,}: 
   Readonly<{children: React.ReactNode;
 }>){

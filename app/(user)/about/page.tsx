@@ -1,4 +1,4 @@
-import Productsfeature from '@/app/component/productList/productsfeature'
+import Productsfeature from '@/components/productList/productsfeature'
 import { Metadata } from 'next'
 import React from 'react'
 export const metadata: Metadata = {

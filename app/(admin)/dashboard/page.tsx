@@ -3,7 +3,7 @@ import { ProductType } from '@/lib/defination';
 import React, { useEffect, useState } from 'react'
 import { Button, Modal } from "flowbite-react";
 import DataTable, { TableColumn } from 'react-data-table-component';
-import SearchButton from '@/app/component/search/searchButton';
+import SearchButton from '@/components/search/searchButton';
 import { useRouter } from 'next/navigation';
 import { BASE_URL,ACCESS_TOKEN } from '@/lib/constants';
 import { placeHolderImage } from '@/lib/defination';
@@ -18,7 +18,7 @@ export default function DashBoard() {
   const[productdetail,setProductDetail]=useState<ProductType>()
  
   useEffect(()=>{
-     fetch(`${BASE_URL}/api/products/?page=1&page_size=20`)
+     fetch(`${BASE_URL}/api/products/?page=1&page_size=40`)
     .then(res=>res.json())
     .then((data)=>
     { const result=data.results
