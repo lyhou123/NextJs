@@ -11,8 +11,8 @@ services:
       - NODE_ENV=production
       - GENERATE_SOURCEMAP=false
     networks:
-			- data_analytics
+      - data_analytics
+
 networks:
   data_analytics:
-    external: true	   
- 	
+    external: true
