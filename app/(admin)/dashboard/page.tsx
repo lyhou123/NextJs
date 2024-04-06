@@ -59,6 +59,10 @@ const handleFilter=(event:any)=>{
     {
       name: 'Product Title',
       selector: row => row.name,
+      style: {
+        backgroundColor: '#f1f1f1',
+        textAlign: 'center',
+      },
     },
     {
      name:'Seller',
@@ -66,7 +70,13 @@ const handleFilter=(event:any)=>{
     },
     {
       name: 'Price (USD)',
-      selector: row => row.price,
+      selector: row => row.price +" $",
+      sortable:true,
+      style: {
+        backgroundColor: '#f1f1f1',
+        textAlign: 'center',
+      },
+
     },
     {
       name: 'Image',
@@ -103,7 +113,29 @@ const handleFilter=(event:any)=>{
           </div>
         </Modal.Body>
       </Modal>
-      <DataTable progressPending={loading}	columns={columns} data={products} pagination persistTableHead/>
+      <DataTable  progressPending={loading} customStyles={customStyles}	columns={columns} data={products} pagination persistTableHead/>
     </main>
   )
 }
+  const customStyles = {
+    rows: {
+      style: {
+        minHeight: "72px", 
+      },
+    },
+    headCells: {
+      style: {
+        paddingLeft: "38px", 
+        paddingRight: "8px",
+        fontSize: "16px",
+        // backgroundColor: "#f1f1f1",
+      },
+    },
+    cells: {
+      style: {
+        paddingLeft: "20px",
+        fontSize: "16px",
+        
+      },
+    },
+  };  
