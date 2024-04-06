@@ -1,7 +1,6 @@
 version: '3'
 services:
   mini_project:
-	  # image: naemyouimages
     build:
       context: .
       dockerfile: Dockerfile
