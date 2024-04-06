@@ -10,6 +10,11 @@ export const menuList = [
       active:false,
     },
     {
+      name:"Products",
+      path:"/products",
+      active:false,
+    },
+    {
       name: "Policy",
       path: "/policy",
       active: false,

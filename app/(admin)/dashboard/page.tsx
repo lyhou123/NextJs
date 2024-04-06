@@ -18,7 +18,7 @@ export default function DashBoard() {
   const[productdetail,setProductDetail]=useState<ProductType>()
  
   useEffect(()=>{
-     fetch(`${BASE_URL}/api/products/?page=1&page_size=40`)
+     fetch(`${BASE_URL}/api/products/?page=1&page_size=200`)
     .then(res=>res.json())
     .then((data)=>
     { const result=data.results
@@ -59,6 +59,10 @@ const handleFilter=(event:any)=>{
     {
       name: 'Product Title',
       selector: row => row.name,
+    },
+    {
+     name:'Seller',
+      selector:row=>row.seller,
     },
     {
       name: 'Price (USD)',

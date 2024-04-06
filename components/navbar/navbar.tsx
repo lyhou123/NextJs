@@ -13,8 +13,8 @@ export default function NavbarComponent() {
   const pathname=usePathname()
   return (
     <Navbar className="cotainer mx-auto">
-      <Navbar.Brand href="https://flowbite-react.com">
-        <img src="/favicon.ico" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
+      <Navbar.Brand href="/">
+        <img src="/favicon.ico" className="mr-3 h-6 sm:h-9" alt="Product Logo" />
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Cambo Production</span>
       </Navbar.Brand>
       <Navbar.Collapse>

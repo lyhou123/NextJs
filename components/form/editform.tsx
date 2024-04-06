@@ -67,7 +67,7 @@ const validationSchema = Yup.object().shape({
 	const initialValues: ProductType = {
 		id: id || 0,
 		seller: seller.toString() || "",
-		category:{name:category},
+		category:{name:category,icon:category},
 		name: name || "",
 		desc: desc || "",
 		image: image || image,
@@ -107,7 +107,7 @@ const handleSubmitProudct = async (props: ProductType) => {
 		},
 		body: JSON.stringify(props),
 	});
-	if(!res.ok) router.push('/dashboard')
+	{router.push(`/dashboard`)}
 };
   
 	return (
@@ -116,7 +116,12 @@ const handleSubmitProudct = async (props: ProductType) => {
 				initialValues={initialValues}
 				validationSchema={validationSchema}
 				 onSubmit={async (values:any) => {
-				
+					const fileIcon = values.fileIcon;
+					const categoryIcon = await handleUploadeIcon(
+						fileIcon,
+						values.categoryName,
+						"category"
+					);
 					
 					// create product post
                     const productPost: ProductType = {
@@ -124,6 +129,7 @@ const handleSubmitProudct = async (props: ProductType) => {
 						seller: values.seller,
 						category: {
 							name: values.categoryName,
+							icon: categoryIcon,
 						},
                         name: values.name,
                         desc: values.desc,
@@ -312,4 +318,3 @@ const CustomInput = ({ field, form, setFieldValue }: any) => {
 		</div>
 	);
   }
-

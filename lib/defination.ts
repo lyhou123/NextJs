@@ -4,7 +4,7 @@ export type ProductType={
     price: number;
     desc: string;
     image: string;
-    category: {name:any};
+    category: {name:any,icon:any};
     seller: string;
     quantity:number;
 }
@@ -15,6 +15,51 @@ export type ProductRespone={
     price:number,
     onClick?:()=>void
 }
+export type CatageoryType = {
+	name: string;
+	icon: string;
+};
+
+export type ProductPostType = {
+	category: CatageoryType;
+	name: string;
+	desc: string;
+	image: string;
+	price: number;
+	quantity: number;
+};
+export type ProductUpdateType = {
+    id:number;
+	category: CatageoryType;
+	name: string;
+	desc: string;
+	image: string;
+	price: number;
+	quantity: number;
+};
+export const initialValues = {
+	categoryName: "",
+	categoryIcon: "",
+	name: "",
+	desc: "",
+	image: "",
+	price: 0,
+	quantity: 0,
+	fileIcon: null,
+	fileProduct: null,
+};
+export const initialValuesUpdate = {
+    id:0,
+	categoryName: "",
+	categoryIcon: "",
+	name: "",
+	desc: "",
+	image: "",
+	price: 0,
+	quantity: 0,
+	fileIcon: null,
+	fileProduct: null,
+};
 export type ProductDetailType={
     params:{
         id:number
