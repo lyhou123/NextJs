@@ -1,7 +1,6 @@
 import React from 'react'
 import { BASE_URL } from '@/lib/constants'
-import { EditProduct } from '@/components/form/editform'
-
+import UpdatePageLayout from '@/components/form/editform'
 type Props = {
 	params:{
 		id:number
@@ -16,18 +15,10 @@ const getData=async(id:number )=>
 }
 export default async function page(props:Props) {
   const data= await getData(props.params.id)
+  console.log(data)
   return (
 	<div>
-       <EditProduct
-	     id={data.id}
-	     name={data.name}
-	     price={data.price}
-	     desc={data.desc}
-	     image={data.image}
-	     category={data.category}
- 	     seller={data.seller.toString()}	
-	quantity={data.quantity}
-	   />
+       <UpdatePageLayout fileProduct={null} category={data.category} price={data.price} desc={data.desc} name={data.name} quantity={data.quantity} image={data.image} id={data.id} seller={data.seller} />
 	</div>
   )
 }

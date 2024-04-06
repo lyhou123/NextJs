@@ -1,320 +1,193 @@
-"use client";
+'use client';
+import { useRouter } from "next/navigation";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import style from "@/app/(admin)/product/style.module.css";
 import { useState } from "react";
-import { BASE_URL, ACCESS_TOKEN } from "@/lib/constants";
-import { useRouter } from "next/navigation";
-import { ProductDetailType, ProductRespone, ProductType } from "@/lib/defination";
-type CatageoryType = {
-	name: string;
-	icon: string;
-};
-
-type ProductPostType = {
-  id:number ;
-	category: CatageoryType;
-	name: string;
-	desc: string;
-	image: string;
-	price: number;
-	quantity: number;
-};
-
-const FILE_SIZE = 1024 * 1024 * 2; // 2MB
-const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
-
+import Image from "next/image";
+import { FormDataUpdate } from "@/lib/defination";
+import style from "@/app/(admin)/product/style.module.css";
+import "@/app/globals.css";
+import { ACCESS_TOKEN, BASE_URL } from "@/lib/constants";
+const BaseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
 const validationSchema = Yup.object().shape({
-	category: Yup.object().shape({
+    category: Yup.object().shape({
         name: Yup.string().required('Required'),
     }),
-	name: Yup.string().required("Required"),
-	desc: Yup.string().nullable(),
-	price: Yup.number().required("Required"),
-	quantity: Yup.number().required("Required"),
-	fileIcon: Yup.mixed()
-		.test("fileFormat", "Unsupported Format", (value: any) => {
-			if (!value) {
-				return true;
-			}
-			return SUPPORTED_FORMATS.includes(value.type);
-		})
-		.test("fileSize", "File Size is too large", (value: any) => {
-			if (!value) {
-				true;
-			}
-			return value.size <= FILE_SIZE;
-		})
-
-		.required("Required"),
-	fileProduct: Yup.mixed()
-		.test("fileFormat", "Unsupported Format", (value: any) => {
-			if (!value) {
-				return true;
-			}
-			return SUPPORTED_FORMATS.includes(value.type);
-		})
-		.test("fileSize", "File Size is too large", (value: any) => {
-			if (!value) {
-				true;
-			}
-			return value.size <= FILE_SIZE;
-		})
-
-		.required("Required"),
+    name: Yup.string().required('Required'),
+    price: Yup.string().required('Required'),
+    image: Yup.string().required('Required'),
+    quantity: Yup.string().required('Required'),
+    desc: Yup.string().required('Required'),
 });
- export function EditProduct({category, name, price, image, quantity, desc, seller, id}: ProductType) {
-	const initialValues: ProductType = {
-		id: id || 0,
-		seller: seller.toString() || "",
-		category:{name:category,icon:category},
-		name: name || "",
-		desc: desc || "",
-		image: image || image,
-		price: price || 0,
-		quantity: quantity || 0,
-	};
-	const router = useRouter();
-	const handleUploadeIcon = async (
-		file: any,
-		name: any,
-		typeFile: "category" | "product"
-	) => {
-		const formData = new FormData();
-		formData.append("name", name);
-		formData.append("image", file);
+const UpdatePageLayout = ({ category, name, price, image, quantity, desc, seller, id }: FormDataUpdate) => {
+    const initialValues: FormDataUpdate = {
+        id: id,
+        category: { name: category},
+        name: name,
+        price: price,
+        image: image,
+        quantity: quantity,
+        desc: desc,
+        seller: seller,
+        fileProduct: null
+    };
 
-		const rest = await fetch(`${BASE_URL}/api/file/${typeFile}/${initialValues.id}/`, {
-			method: "PUT",
-			headers: {
-        'Content-Type': 'application/json',
-				Authorization: `Bearer ${ACCESS_TOKEN}`,
-			},
-		   body:formData
-		});
+    const router = useRouter();
+    const [imagePreview, setImagePreview] = useState("");
 
-		const data = await rest.json();
-		return data.image;
-	};
+    const handleUpload = async (
+        file: any,
+        name: any,
+        typeFile: "product"
+    ) => {
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("image", file);
 
-const handleSubmitProudct = async (props: ProductType) => {
-	console.log("product uploade: ", props.id)
-	const res = await fetch(`${BASE_URL}/api/products/${props.id}/`, {
-		method: "PUT",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${ACCESS_TOKEN}`,
-		},
-		body: JSON.stringify(props),
-	});
-	{router.push(`/dashboard`)}
-};
-  
-	return (
-		<main className={`${style.container}`}>
-			<Formik
-				initialValues={initialValues}
-				validationSchema={validationSchema}
-				 onSubmit={async (values:any) => {
-					const fileIcon = values.fileIcon;
-					const categoryIcon = await handleUploadeIcon(
-						fileIcon,
-						values.categoryName,
-						"category"
-					);
-					
-					// create product post
-                    const productPost: ProductType = {
-                        id: values.id,
-						seller: values.seller,
-						category: {
-							name: values.categoryName,
-							icon: categoryIcon,
-						},
-                        name: values.name,
-                        desc: values.desc,
-                        image: values.image,
-                        price: values.price,
-                        quantity: values.quantity,
-                    }
+        const rest = await fetch(`${BASE_URL}/api/file/${typeFile}/${initialValues.id}/`, {
+            method: "PUT",
+            headers: {
+                'Authorization': `Bearer ${ACCESS_TOKEN}`
+            },
+            body: formData,
+        });
 
-                    // post product
-                    handleSubmitProudct(productPost)
-				}}
-			>
-				{({ setFieldValue }) => (
-					<Form className="bg-gray-100 p-4 rounded-lg w-full flex justify-evenly">
-						{/* Product Name */}
-                        <div className="w-96">
-                        <h1 className={`${style.title}`}>Create Product</h1>
-						<div className="mb-5">
-							<label className={`${style.label}`} htmlFor="name">
-								Product Name
-							</label>
-							<Field
-								type="text"
-								name="name"
-								id="name"
-								className={`${style.input}`}
-                               placeholder={name}
-							/>
-							<ErrorMessage
-								name="name"
-								component="div"
-								className={`${style.error}`}
-							/>
-						</div>
-
-						{/* Product Description */}
-						<div className="mb-5">
-							<label className={`${style.label}`} htmlFor="desc">
-								Product Description
-							</label>
-							<Field
-								type="text"
-								name="desc"
-								id="desc"
-								component="textarea"
-								className={`${style.input}`}
-                                  placeholder={desc}
-							/>
-							<ErrorMessage
-								name="desc"
-								component="div"
-								className={`${style.error}`}
-							/>
-						</div>
-
-						{/* Product Price */}
-						<div className="mb-5">
-							<label className={`${style.label}`} htmlFor="price">
-								Product Price
-							</label>
-							<Field
-								type="number"
-								name="price"
-								id="price"
-								className={`${style.input}`}
-                               placeholder={price}
-							/>
-							<ErrorMessage
-								name="price"
-								component="div"
-								className={`${style.error}`}
-           
-							/>
-						</div>
-
-						{/* Product Quantity */}
-						<div className="mb-5">
-							<label className={`${style.label}`} htmlFor="price">
-								Product Quantity
-							</label>
-							<Field
-								type="number"
-								name="quantity"
-								id="quantity"
-								className={`${style.input}`}
-                
-							/>
-							<ErrorMessage
-								name="quantity"
-								component="div"
-								className={`${style.error}`}
-							/>
-						</div>
-
-						{/* Product Category */}
-						<div className="mb-5">
-							<label className={`${style.label}`} htmlFor="categoryName">
-								Product Category
-							</label>
-							<Field
-								type="text"
-								name="categoryName"
-								id="categoryName"
-								className={`${style.input}`}
-                                
-							/>
-							<ErrorMessage
-								name="categoryName"
-								component="div"
-								className={`${style.error}`}
-							/>
-						</div>
+        const data = await rest.json();
+        return data.image;
+    };
+    const handleSubmitProduct = async (productPost: FormDataUpdate) => {
+            if (productPost.fileProduct) {
+                const newImageUrl = await handleUpload(productPost.fileProduct, productPost.name, "product");
+                productPost.image = newImageUrl;
+            }
+            const response = await fetch(`${BASE_URL}/api/products/${productPost.id}/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${ACCESS_TOKEN}`
+                },
+                body: JSON.stringify(productPost)
+            });
+            if (response.ok) {
+                router.push('/dashboard');
+            } else {
+                console.log('error')
+            }
+        }  
+    return (
+        <main className={style.container}>
+            <Formik initialValues={initialValues} onSubmit={handleSubmitProduct} validationSchema={validationSchema}>
+                {({ setFieldValue }) => (
+                    <Form className="bg-gray-100 p-4 rounded-lg w-full flex justify-evenly">
+						<div className="w-96">
+                        <h1 className={`${style.title}`}>Update Product</h1>
+                        <div className="mb-5">
+                            <label className={`${style.label}`} htmlFor="category.name">
+                                Category
+                            </label>
+                            <Field
+                                type="text"
+                                placeholder="Category"
+                                name="category.name"
+                                id="category.name"
+                                className={`${style.input}`}
+                            />
+                            <ErrorMessage name="category.name" component="div" className={`${style.error}`} />
                         </div>
-						{/* Product Category Icon*/}
-                        <div>
-						<div className="mb-5 mt-6  w-[300px] ">
-							<label className={`${style.label}`} htmlFor="categoryIcon">
-								Product Category Icon
-							</label>
-							<Field
-								type="file"
-								name="fileIcon"
-								id="fileIcon"
-								component={CustomInput}
-								setFieldValue={setFieldValue}
-								className={`${style.input}`}
-							/>
-							<ErrorMessage
-								name="fileIcon"
-								component="div"
-								className={`${style.error}`}
-							/>
+                        <div className="mb-5">
+                            <label className={`${style.label}`} htmlFor="name">
+                                Name
+                            </label>
+                            <Field
+                                type="text"
+                                placeholder="Name"
+                                name="name"
+                                id="name"
+                                className={`${style.input}`}
+                            />
+                            <ErrorMessage name="name" component="div" className={`${style.error}`} />
+                        </div>
+                        <div className="mb-5">
+                            <label className={`${style.label}`} htmlFor="price">
+                                Price
+                            </label>
+                            <Field
+                                type="text"
+                                placeholder="Price"
+                                name="price"
+                                id="price"
+                                className={`${style.input}`}
+                            />
+                            <ErrorMessage name="price" component="div" className={`${style.error}`} />
+                        </div>
+                        <div className="mb-5">
+                            <label className={`${style.label}`} htmlFor="quantity">
+                                Quantity
+                            </label>
+                            <Field
+                                type="text"
+                                placeholder="Quantity"
+                                name="quantity"
+                                id="quantity"
+                                className={`${style.input}`}
+                            />
+                            <ErrorMessage name="quantity" component="div" className={`${style.error}`} />
+                        </div>
 						</div>
-
-						{/* Product Image*/}
-						<div className="mb-5 w-[300px] ">
-							<label className={`${style.label}`} htmlFor="fileProduct">
-								Product Image
-							</label>
-							<Field
-								type="file"
-								name="fileProduct"
-								id="fileProduct"
-								component={CustomInput}
-								setFieldValue={setFieldValue}
-								className={`${style.input}`}
-
-							/>
-							<ErrorMessage
-								name="fileProduct"
-								component="div"
-								className={`${style.error}`}
-							/>
-						</div>
-
-						{/* button submit */}
-						<button  type="submit" className={`${style.button}`} >
-							Update
+						<div>
+                        <div className="mb-5">
+                            <label className={`${style.label}`} htmlFor="image">
+                                Image
+                            </label>
+                            <CustomInput
+                                name="fileProduct"
+                                setFieldValue={setFieldValue}
+                                setImagePreview={setImagePreview}
+                            />
+                            {imagePreview && <img src={imagePreview} alt="preview" width={200} height={200}/>}
+                            <ErrorMessage name="fileProduct" component="div" className={`${style.error}`} />
+                        </div>
+                        <div className="mb-5">
+                            <label className={`${style.label}`} htmlFor="desc">
+                                Description
+                            </label>
+                            <Field
+                                type="text"
+                                placeholder="Description"
+                                name="desc"
+                                id="desc"
+                                className={`${style.input}`}
+                            />
+                            <ErrorMessage name="desc" component="div" className={`${style.error}`} />
+                        </div>
+                            <div className="mb-5">
+                            <button onClick={()=>router.push(`/dashboard`)} type="submit" className={`${style.button}`} >
+							Submit
 						</button>
 						<button onClick={()=>router.push(`/dashboard`)} type="submit" className='bg-red-600 text-white px-3 py-2 ml-2 rounded-lg' >
 							Cancel
 						</button>
-                        </div>
-					</Form>
-				)}
-			</Formik>
-		</main>
-	);
+                            </div>
+							
+							</div>
+                    </Form>
+                )}
+            </Formik>
+        </main>
+    )
 }
-const CustomInput = ({ field, form, setFieldValue }: any) => {
-	const [imagePreview, setImagePreview] = useState("");
+const CustomInput = ({ field, setFieldValue, setImagePreview }: any) => {
+    const handleUploadFile = (e: any) => {
+        const file = e.target.files[0];
+        const localUrl = URL.createObjectURL(file);
+        setImagePreview(localUrl);
+        setFieldValue('fileProduct', file);
+    };
+    return (
+        <div>
+            <input onChange={(e) => handleUploadFile(e)} type="file" />
+        </div>
+    );
+};
 
-	const handleUploadeFile = (e: any) => {
-		const file = e.target.files[0];
-		const localUrl = URL.createObjectURL(file);
-		console.log(localUrl);
-		setImagePreview(localUrl);
-
-		setFieldValue(field.name, file);
-	};
-	console.log(imagePreview)
-	return (
-		<div>
-			<input onChange={(e) => handleUploadeFile(e)} type="file" />
-			{imagePreview && <img src={imagePreview} alt="preview" />}
-		</div>
-	);
-  }
+export default UpdatePageLayout;

@@ -4,9 +4,41 @@ export type ProductType={
     price: number;
     desc: string;
     image: string;
-    category: {name:any,icon:any};
+    category: {name:any};
     seller: string;
     quantity:number;
+}
+export type ProductType1={
+    id: number;
+    name: string;
+    price: number;
+    desc: string;
+    image: string;
+    category: {name:any};
+    quantity:number;
+	
+}
+export type FormDataUpdate = {readonly id: number, category: {name: any}, name: string, desc: string, image?: string, price: string, quantity: string, seller: string, fileProduct: any}
+export type FormDataCreate = {
+    category: {
+        name: string;
+        icon: string;
+    };
+    name: string;
+    desc: string;
+    image ?: string;
+    price: string;
+    quantity: string;
+}
+export type ProductTypeUpdate={
+    id: number;
+    name: string;
+    price: number;
+    desc: string;
+    image: string;
+    category: {name:any};
+    quantity:number;
+	seller: string;
 }
 export type ProductRespone={
     name:string,
@@ -28,6 +60,7 @@ export type ProductPostType = {
 	price: number;
 	quantity: number;
 };
+
 export type ProductUpdateType = {
     id:number;
 	category: CatageoryType;
