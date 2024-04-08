@@ -35,7 +35,7 @@
 `git clone https://github.com/lyhou123/NextJs`
 
 2. Run the project with live server
-Open [http://localhost:5500](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
